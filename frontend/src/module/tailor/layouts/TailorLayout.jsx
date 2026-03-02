@@ -65,14 +65,14 @@ const TailorLayout = () => {
             </header>
 
             {/* Main Content Area */}
-            <main className="flex-1 overflow-y-auto w-full scroll-smooth pb-16 md:pb-20">
+            <main className="flex-1 overflow-y-auto w-full scroll-smooth pb-16">
                 <div className="p-3 md:p-5 lg:p-6 max-w-[1600px] mx-auto">
                     <Outlet />
                 </div>
             </main>
 
             {/* Bottom Navigation */}
-            <nav className="fixed bottom-0 left-0 right-0 h-20 bg-slate-900 border-t border-white/5 px-2 z-[100] flex items-center justify-around shadow-[0_-10px_30px_rgba(0,0,0,0.3)]">
+            <nav className="fixed bottom-0 left-0 right-0 h-16 bg-slate-900 border-t border-white/5 px-2 z-[100] flex items-center justify-around shadow-[0_-10px_30px_rgba(0,0,0,0.4)]">
                 {navItems.map((item) => (
                     <NavLink
                         key={item.path}

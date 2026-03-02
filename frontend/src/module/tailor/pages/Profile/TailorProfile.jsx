@@ -15,11 +15,45 @@ import {
     Plus,
     CheckCircle,
     LayoutDashboard,
-    Zap
+    Zap,
+    Edit2,
+    Trash2,
+    Map,
+    Save,
+    X,
+    Building2,
+    ChevronDown
 } from 'lucide-react';
 
 const TailorProfile = () => {
     const [activeTab, setActiveTab] = useState('about');
+
+    // States for Profile Management
+    const [schedule, setSchedule] = useState([
+        { day: 'Mon - Fri', hours: '09AM - 08PM', isOpen: true },
+        { day: 'Saturday', hours: '10AM - 04PM', isOpen: true },
+        { day: 'Sunday', hours: 'Closed', isOpen: false }
+    ]);
+    const [isEditingSchedule, setIsEditingSchedule] = useState(false);
+
+    const [portfolio, setPortfolio] = useState([
+        { id: 1, title: 'Bespoke Suit', image: 'https://images.unsplash.com/photo-1594932224824-c4e00a36e9ef?auto=format&fit=crop&q=80&w=400' },
+        { id: 2, title: 'Classic Tuxedo', image: 'https://images.unsplash.com/photo-1598033129183-c4f50c7176c8?auto=format&fit=crop&q=80&w=400' },
+        { id: 3, title: 'Linen Collection', image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&q=80&w=400' },
+        { id: 4, title: 'Formal Trousers', image: 'https://images.unsplash.com/photo-1624222247344-550fbadfd08d?auto=format&fit=crop&q=80&w=400' }
+    ]);
+
+    const [serviceAreas, setServiceAreas] = useState(['South Mumbai', 'Bandra West', 'Juhu Hub', 'Andheri East']);
+    const [isEditingServiceAreas, setIsEditingServiceAreas] = useState(false);
+    const [newArea, setNewArea] = useState('');
+
+    const [bankDetails, setBankDetails] = useState({
+        accountHolder: 'M. IQBAL ANSARI',
+        bankName: 'HDFC BANK LTD',
+        accountNumber: 'XXXX XXXX 8821',
+        ifscCode: 'HDFC0001242'
+    });
+    const [isEditingBank, setIsEditingBank] = useState(false);
 
     const tabs = [
         { id: 'about', label: 'Identity', icon: User },
@@ -91,8 +125,8 @@ const TailorProfile = () => {
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={`flex-1 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === tab.id
-                                ? 'bg-slate-900 text-white shadow-md'
-                                : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+                            ? 'bg-slate-900 text-white shadow-md'
+                            : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
                             }`}
                     >
                         <tab.icon size={14} />
@@ -146,6 +180,61 @@ const TailorProfile = () => {
                                         ))}
                                     </div>
                                 </div>
+
+                                {/* Service Areas Management */}
+                                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-2 border-l-4 border-primary-600 pl-3">
+                                            <h2 className="text-[11px] font-black text-slate-800 uppercase tracking-widest">Service Coverage Area</h2>
+                                        </div>
+                                        <button
+                                            onClick={() => setIsEditingServiceAreas(!isEditingServiceAreas)}
+                                            className="text-[10px] font-black uppercase text-primary-600 hover:text-primary-700 flex items-center gap-1.5"
+                                        >
+                                            {isEditingServiceAreas ? <X size={12} /> : <Edit2 size={12} />}
+                                            {isEditingServiceAreas ? 'Cancel' : 'Manage'}
+                                        </button>
+                                    </div>
+
+                                    <div className="flex flex-wrap gap-2">
+                                        {serviceAreas.map((area, index) => (
+                                            <div key={index} className="px-3 py-2 bg-slate-50 border border-slate-100 rounded-xl flex items-center gap-3 group/area">
+                                                <MapPin size={10} className="text-primary-500" />
+                                                <span className="text-[10px] font-bold text-slate-700 uppercase tracking-tight">{area}</span>
+                                                {isEditingServiceAreas && (
+                                                    <button
+                                                        onClick={() => setServiceAreas(serviceAreas.filter((_, i) => i !== index))}
+                                                        className="text-slate-300 hover:text-red-500 transition-colors"
+                                                    >
+                                                        <Trash2 size={10} />
+                                                    </button>
+                                                )}
+                                            </div>
+                                        ))}
+                                        {isEditingServiceAreas && (
+                                            <div className="flex items-center gap-2 w-full mt-2">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Add new area..."
+                                                    className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-[10px] font-bold uppercase outline-none focus:border-primary-400"
+                                                    value={newArea}
+                                                    onChange={(e) => setNewArea(e.target.value)}
+                                                />
+                                                <button
+                                                    onClick={() => {
+                                                        if (newArea.trim()) {
+                                                            setServiceAreas([...serviceAreas, newArea.trim()]);
+                                                            setNewArea('');
+                                                        }
+                                                    }}
+                                                    className="p-2 bg-primary-600 text-white rounded-xl hover:bg-primary-700 shadow-md shadow-primary-100"
+                                                >
+                                                    <Plus size={14} />
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
 
                             {/* Verification Sidebar */}
@@ -183,25 +272,43 @@ const TailorProfile = () => {
 
                     {activeTab === 'portfolio' && (
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                            {portfolio.map((item) => (
                                 <motion.div
-                                    key={i}
+                                    key={item.id}
                                     whileHover={{ y: -5 }}
                                     className="aspect-[3/4] bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden group cursor-pointer relative"
                                 >
                                     <img
-                                        src={`https://images.unsplash.com/photo-${1500000000000 + (i * 1000)}?auto=format&fit=crop&q=80&w=400`}
+                                        src={item.image}
                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                        alt="Portfolio"
+                                        alt={item.title}
                                     />
                                     <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/80 to-transparent translate-y-full group-hover:translate-y-0 transition-transform">
-                                        <p className="text-[8px] font-black text-white uppercase tracking-widest">Project #{i + 100}</p>
+                                        <p className="text-[8px] font-black text-white uppercase tracking-widest">{item.title}</p>
                                     </div>
+                                    <button
+                                        onClick={() => setPortfolio(portfolio.filter(p => p.id !== item.id))}
+                                        className="absolute top-2 right-2 p-1.5 bg-white/20 backdrop-blur-md rounded-lg text-white opacity-0 group-hover:opacity-100 hover:bg-red-500 transition-all"
+                                    >
+                                        <Trash2 size={10} />
+                                    </button>
                                 </motion.div>
                             ))}
-                            <div className="aspect-[3/4] bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-300 hover:bg-primary-50 hover:border-primary-100 transition-all cursor-pointer group">
+                            <div
+                                onClick={() => {
+                                    const title = prompt('Project Title:');
+                                    if (title) {
+                                        setPortfolio([...portfolio, {
+                                            id: Date.now(),
+                                            title,
+                                            image: 'https://images.unsplash.com/photo-1558603668-6570496b66f8?auto=format&fit=crop&q=80&w=400'
+                                        }]);
+                                    }
+                                }}
+                                className="aspect-[3/4] bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-300 hover:bg-primary-50 hover:border-primary-100 transition-all cursor-pointer group"
+                            >
                                 <Plus size={24} className="group-hover:scale-110 transition-transform text-slate-400" />
-                                <span className="text-[9px] font-black uppercase mt-2 tracking-widest">New Entry</span>
+                                <span className="text-[9px] font-black uppercase mt-2 tracking-widest">Update Sample</span>
                             </div>
                         </div>
                     )}
@@ -211,15 +318,36 @@ const TailorProfile = () => {
                             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2 border-l-4 border-primary-600 pl-3">
-                                        <h2 className="text-[11px] font-black text-slate-800 uppercase tracking-widest">Working Hours</h2>
+                                        <h2 className="text-[11px] font-black text-slate-800 uppercase tracking-widest">Profile Availability</h2>
                                     </div>
-                                    <div className="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[8px] font-black rounded uppercase border border-emerald-100">Now Open</div>
+                                    <button
+                                        onClick={() => setIsEditingSchedule(!isEditingSchedule)}
+                                        className="text-[10px] font-black uppercase text-primary-600 hover:text-primary-700 flex items-center gap-1.5"
+                                    >
+                                        {isEditingSchedule ? <Save size={12} className="text-emerald-500" /> : <Edit2 size={12} />}
+                                        {isEditingSchedule ? 'Confirm' : 'Update Schedule'}
+                                    </button>
                                 </div>
                                 <div className="space-y-3">
-                                    {['Mon - Fri', 'Saturday', 'Sunday'].map((day, i) => (
-                                        <div key={day} className={`flex items-center justify-between p-3 rounded-xl border ${i === 2 ? 'bg-slate-50 border-slate-100 text-slate-400' : 'bg-white border-slate-100'}`}>
-                                            <span className="text-[10px] font-black uppercase">{day}</span>
-                                            <span className="text-[10px] font-bold uppercase">{i === 1 ? '10AM - 4PM' : i === 2 ? 'Closed' : '09AM - 08PM'}</span>
+                                    {schedule.map((dayObj, i) => (
+                                        <div key={i} className={`flex items-center justify-between p-4 rounded-xl border transition-all ${!dayObj.isOpen ? 'bg-slate-50 border-slate-100 opacity-60' : 'bg-white border-slate-100 hover:border-primary-100 shadow-sm'}`}>
+                                            <div className="flex items-center gap-3">
+                                                <div className={`w-2 h-2 rounded-full ${dayObj.isOpen ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-slate-300'}`} />
+                                                <span className="text-[10px] font-black uppercase tracking-tight">{dayObj.day}</span>
+                                            </div>
+                                            {isEditingSchedule ? (
+                                                <input
+                                                    className="bg-slate-50 border-none outline-none text-[10px] font-black text-right text-primary-600 focus:ring-0 w-32"
+                                                    value={dayObj.hours}
+                                                    onChange={(e) => {
+                                                        const newSchedule = [...schedule];
+                                                        newSchedule[i].hours = e.target.value;
+                                                        setSchedule(newSchedule);
+                                                    }}
+                                                />
+                                            ) : (
+                                                <span className="text-[10px] font-bold uppercase text-slate-500">{dayObj.hours}</span>
+                                            )}
                                         </div>
                                     ))}
                                 </div>
@@ -262,7 +390,80 @@ const TailorProfile = () => {
 
                             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
                                 <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                                    <h4 className="text-[10px] font-black text-slate-800 uppercase tracking-widest">Payment Activity</h4>
+                                    <div className="flex items-center gap-2 border-l-4 border-slate-900 pl-3">
+                                        <h4 className="text-[10px] font-black text-slate-800 uppercase tracking-widest">Withdrawal Bank Details</h4>
+                                    </div>
+                                    <button
+                                        onClick={() => setIsEditingBank(!isEditingBank)}
+                                        className="text-primary-600 hover:text-primary-700 transition-colors"
+                                    >
+                                        {isEditingBank ? <CheckCircle size={16} className="text-emerald-500" /> : <Edit2 size={14} />}
+                                    </button>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2">
+                                    <div className="space-y-1.5 p-4 bg-slate-50 rounded-2xl border border-slate-100 group transition-all hover:border-primary-100">
+                                        <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                            <Building2 size={10} /> Bank Name
+                                        </p>
+                                        {isEditingBank ? (
+                                            <input
+                                                className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-[11px] font-black uppercase text-primary-600"
+                                                value={bankDetails.bankName}
+                                                onChange={(e) => setBankDetails({ ...bankDetails, bankName: e.target.value })}
+                                            />
+                                        ) : (
+                                            <p className="text-[11px] font-black text-slate-800 uppercase">{bankDetails.bankName}</p>
+                                        )}
+                                    </div>
+                                    <div className="space-y-1.5 p-4 bg-slate-50 rounded-2xl border border-slate-100 group transition-all hover:border-primary-100">
+                                        <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                            <User size={10} /> Beneficiary Name
+                                        </p>
+                                        {isEditingBank ? (
+                                            <input
+                                                className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-[11px] font-black uppercase text-primary-600"
+                                                value={bankDetails.accountHolder}
+                                                onChange={(e) => setBankDetails({ ...bankDetails, accountHolder: e.target.value })}
+                                            />
+                                        ) : (
+                                            <p className="text-[11px] font-black text-slate-800 uppercase">{bankDetails.accountHolder}</p>
+                                        )}
+                                    </div>
+                                    <div className="space-y-1.5 p-4 bg-slate-50 rounded-2xl border border-slate-100 group transition-all hover:border-primary-100">
+                                        <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                            <CreditCard size={10} /> Account Number
+                                        </p>
+                                        {isEditingBank ? (
+                                            <input
+                                                className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-[11px] font-black uppercase text-primary-600"
+                                                value={bankDetails.accountNumber.replace(/XXXX XXXX /, '')}
+                                                onChange={(e) => setBankDetails({ ...bankDetails, accountNumber: `XXXX XXXX ${e.target.value}` })}
+                                            />
+                                        ) : (
+                                            <p className="text-[11px] font-black text-slate-800 uppercase">{bankDetails.accountNumber}</p>
+                                        )}
+                                    </div>
+                                    <div className="space-y-1.5 p-4 bg-slate-50 rounded-2xl border border-slate-100 group transition-all hover:border-primary-100">
+                                        <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                            <Shield size={10} /> IFSC Code
+                                        </p>
+                                        {isEditingBank ? (
+                                            <input
+                                                className="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-[11px] font-black uppercase text-primary-600"
+                                                value={bankDetails.ifscCode}
+                                                onChange={(e) => setBankDetails({ ...bankDetails, ifscCode: e.target.value })}
+                                            />
+                                        ) : (
+                                            <p className="text-[11px] font-black text-slate-800 uppercase">{bankDetails.ifscCode}</p>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                                    <h4 className="text-[10px] font-black text-slate-800 uppercase tracking-widest">Recent Payment Activity</h4>
                                     <Zap size={14} className="text-primary-600" />
                                 </div>
                                 <div className="space-y-2">

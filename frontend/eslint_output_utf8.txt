@@ -1,0 +1,22 @@
+﻿
+D:\Tailoring-Platform-main\Tailoring-Platform-main\frontend\src\module\delivery\layouts\DeliveryLayout.jsx
+   3:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                         no-unused-vars
+  17:12  error  'showNotifications' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u     no-unused-vars
+  17:31  error  'setShowNotifications' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  19:11  error  'navigate' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u              no-unused-vars
+
+D:\Tailoring-Platform-main\Tailoring-Platform-main\frontend\src\module\delivery\pages\Dashboard\DeliveryDashboard.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+D:\Tailoring-Platform-main\Tailoring-Platform-main\frontend\src\module\delivery\pages\History\DeliveryHistory.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+D:\Tailoring-Platform-main\Tailoring-Platform-main\frontend\src\module\delivery\pages\Profile\DeliveryProfile.jsx
+   2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  37:25  error  'section' is defined but never used                                            no-unused-vars
+
+D:\Tailoring-Platform-main\Tailoring-Platform-main\frontend\src\module\delivery\pages\Tasks\Tasks.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+Γ£û 9 problems (9 errors, 0 warnings)
+
